@@ -29,8 +29,9 @@ app.get('/', (req, res) => {
   res.send('Yo!')
 })
 
-function user (userCount = 1) {
-  return {
+function user (recordCount = 1) {
+  // TODO: time and try regular for loop
+  return [...Array(recordCount)].map(item => ({
     id: randUuid(),
     name: randFullName(),
     email: randEmail(),
@@ -39,19 +40,20 @@ function user (userCount = 1) {
     musicGenre: randMusicGenre(),
     song: randSong(),
     book: randBook().title,
-    word: randWord(),
+    // word: randWord(),
     color: randColor(),
     movie: randMovie(),
     drink: randDrinks(),
     food: randFood(),
     number: randNumber({ min: 10, max: 100 }),
-    superHero: randSuperheroName(),
-    quote: randQuote()
-  }
+    superHero: randSuperheroName()
+    // quote: randQuote()
+  }))
 }
 
 app.get('/users', (req, res) => {
-  res.json([user(), user(), user()])
+  const { recordCount = 1 } = req.query
+  res.json(user(Number(recordCount)))
 })
 
 app.listen(port, () => {
